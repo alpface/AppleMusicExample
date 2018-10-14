@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "XYMusicListViewController.h"
 
 @interface ViewController ()
 
@@ -19,5 +20,11 @@
     // Do any additional setup after loading the view, typically from a nib.
 }
 
+- (IBAction)buttonClick:(id)sender {
+    
+    XYMusicListViewController *vc = [XYMusicListViewController sharedInstance];
+    UINavigationController *nac = [[UINavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:nac animated:YES completion:nil];
+}
 
 @end

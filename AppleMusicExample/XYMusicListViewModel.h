@@ -1,0 +1,22 @@
+//
+//  XYMusicListViewModel.h
+//  AppleMusicExample
+//
+//  Created by xiaoyuan on 2018/10/14.
+//  Copyright © 2018 xiaoyuan. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface XYMusicListViewModel : NSObject
+
+@property (nonatomic, weak) UICollectionView *collectionView;
+
+- (void)newDataArray:(NSArray *)dataArray;
+- (void)moewDataArray:(NSArray *)dataArray;
+
+@end
+
+NS_ASSUME_NONNULL_END
