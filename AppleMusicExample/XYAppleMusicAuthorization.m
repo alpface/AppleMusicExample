@@ -46,8 +46,7 @@
             _appleMusicDeveloperToken = configDict[@"appleMusicDeviceToken"];
             _appleMusicURLStr = @"https://api.music.apple.com/v1/me/library/songs";
         }
-        NSAssert(_appleMusicDeveloperToken, @"apple music device token不能为nil");
-        NSParameterAssert(_appleMusicDeveloperToken);
+        NSAssert(_appleMusicDeveloperToken, @"apple music device token不能为nil, 参照配置[https://www.jianshu.com/p/17923efa622f]");
         
     }
     return self;
