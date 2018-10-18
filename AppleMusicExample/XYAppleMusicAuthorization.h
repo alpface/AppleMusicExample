@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface XYAppleMusicAuthorization : NSObject
 
-+ (void)authorizeAppleMusic;
++ (void)requestAppleMusicAuthorize;
 
 + (void)requestAppleMusicUserLibrarySongsWithOffset:(NSInteger)offset completion:(void (^)(NSDictionary * _Nullable response, NSInteger nextOffset))completion;
 @end

@@ -22,17 +22,29 @@
 @implementation XYMusicListViewController
 
 + (instancetype)sharedInstance {
-    static XYMusicListViewController *instance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        flowLayout.minimumInteritemSpacing = 10;
-        flowLayout.minimumLineSpacing      = 10;
-        flowLayout.estimatedItemSize = CGSizeMake(60, 60.0);
-        [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-        instance = [[XYMusicListViewController alloc] initWithCollectionViewLayout:flowLayout];
-    });
-    return instance;
+//    static XYMusicListViewController *instance = nil;
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+//        flowLayout.minimumInteritemSpacing = 10;
+//        flowLayout.minimumLineSpacing      = 10;
+//        flowLayout.estimatedItemSize = CGSizeMake(60, 60.0);
+//        [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
+//        instance = [[XYMusicListViewController alloc] initWithCollectionViewLayout:flowLayout];
+//    });
+//    return instance;
+    
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.minimumInteritemSpacing = 10;
+    flowLayout.minimumLineSpacing      = 10;
+    flowLayout.estimatedItemSize = CGSizeMake(60, 60.0);
+    [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
+    XYMusicListViewController *vc = [[XYMusicListViewController alloc] initWithCollectionViewLayout:flowLayout];
+    return vc;
+}
+
+- (void)dealloc {
+    
 }
 
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {

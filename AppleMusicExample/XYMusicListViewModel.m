@@ -23,7 +23,7 @@
 {
     self = [super init];
     if (self) {
-        [XYAppleMusicAuthorization authorizeAppleMusic];
+        [XYAppleMusicAuthorization requestAppleMusicAuthorize];
         
     }
     return self;
@@ -63,14 +63,13 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *appleMusicUserLibrarySong = self.list[indexPath.row];
-    NSString *songUserLibraryID = [appleMusicUserLibrarySong objectForKey:@"id"];
-    NSLog(@"user library storeID is %@", songUserLibraryID);
+    NSDictionary *music = self.list[indexPath.row];
+    NSString *musicId = [music objectForKey:@"id"];
     
     XYMusicPlayerViewController *musicPlayerVC = [XYMusicPlayerViewController sharedInstance];
     [musicPlayerVC.musicPlayer pause];
-    [musicPlayerVC.musicPlayer setQueueWithStoreIDs:@[songUserLibraryID]];
-    musicPlayerVC.musicPlayer.volume = 0.1;
+    [musicPlayerVC.musicPlayer setQueueWithStoreIDs:@[musicId]];
+//    musicPlayerVC.musicPlayer.volume = 0.1;
     [musicPlayerVC.musicPlayer
      prepareToPlayWithCompletionHandler:^(NSError * _Nullable error) {
          if (error) {

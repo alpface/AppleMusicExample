@@ -52,7 +52,7 @@
     return self;
 }
 
-+ (void)authorizeAppleMusic {
++ (void)requestAppleMusicAuthorize {
     switch ([SKCloudServiceController authorizationStatus]) {
         case SKCloudServiceAuthorizationStatusNotDetermined:
             NSLog(@"用户还没有做出选择");

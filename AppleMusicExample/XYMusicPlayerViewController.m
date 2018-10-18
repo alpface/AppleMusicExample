@@ -48,30 +48,30 @@
         
     } else {
         // no song in music player queue
-        NSLog(@"index of now playing item is nil");
+        NSLog(@"没有歌曲播放");
     }
 }
 
 - (void)handleMusicPlaybackStateDidChange {
     switch (self.musicPlayer.playbackState) {
         case MPMusicPlaybackStateStopped:
-            NSLog(@"music playback stopped");
+            NSLog(@"音乐播放停止");
             // playlist, song, album ended
             break;
         case MPMusicPlaybackStatePlaying:
-            NSLog(@"music playback playing");
+            NSLog(@"音乐播放中");
             break;
         case MPMusicPlaybackStatePaused:
-            NSLog(@"music playback paused");
+            NSLog(@"音乐播放暂停");
             break;
         case MPMusicPlaybackStateInterrupted:
-            NSLog(@"music playback interrupted");
+            NSLog(@"音乐播放中断");
             break;
         case MPMusicPlaybackStateSeekingForward:
-            NSLog(@"music playback seeking forward");
+            NSLog(@"音乐播放寻求前进");
             break;
         case MPMusicPlaybackStateSeekingBackward:
-            NSLog(@"music playback seeking backward");
+            NSLog(@"音乐播放寻求后退");
             break;
     }
 }
