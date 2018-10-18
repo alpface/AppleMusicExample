@@ -9,6 +9,9 @@
 #import "XYMusicPlayerViewController.h"
 
 @interface XYMusicPlayerViewController () <AVAudioPlayerDelegate>
+/// 当前播放的歌曲序号， 只适应AVAudioPlayer的本地歌曲
+@property (nonatomic, assign) NSInteger currentTrackNumber;
+@property (nonatomic, strong) NSArray<MPMediaItem *> *localItems;
 
 @end
 
@@ -45,14 +48,54 @@
     return self;
 }
 
-+ (void)playeWithLocalURL:(NSURL *)assetUrl {
+- (void)playeWithLocalURL:(NSURL *)assetUrl {
     NSError *error = nil;
-    [[self sharedInstance].audioPlayer pause];
-    [self sharedInstance].audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:assetUrl error:&error];
-    [[self sharedInstance].audioPlayer play];
-    [self sharedInstance].audioPlayer.delegate = [self sharedInstance];
-    [self sharedInstance].audioPlayer.enableRate = YES;
-    [self sharedInstance].audioPlayer.meteringEnabled = YES;
+    [_audioPlayer stop];
+    _audioPlayer = nil;
+    self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:assetUrl error:&error];
+    [self.audioPlayer play];
+    self.audioPlayer.delegate = self;
+    self.audioPlayer.enableRate = YES;
+    self.audioPlayer.meteringEnabled = YES;
+}
+
+- (void)playWithItems:(NSArray<MPMediaItem *> *)items trackNumber:(NSInteger)trackNumber {
+    self.localItems = items;
+    self.currentTrackNumber = trackNumber;
+    [self.audioPlayer pause];
+    NSURL *musicURL = nil;
+    MPMediaItem *musicItem = items[self.currentTrackNumber];
+    musicURL = [musicItem valueForKey:MPMediaItemPropertyAssetURL];
+    if (musicURL) {
+        NSError *error = nil;
+        self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:musicURL error:&error];
+        [self.audioPlayer play];
+        self.audioPlayer.delegate = self;
+        self.audioPlayer.enableRate = YES;
+        self.audioPlayer.meteringEnabled = YES;
+    }
+    else {
+        [self playNextMusic];
+    }
+}
+
+- (void)playNextMusic {
+    if (self.currentTrackNumber < [self.localItems count] - 1) {
+        self.currentTrackNumber ++;
+        if (_audioPlayer) {
+            [_audioPlayer stop];
+            _audioPlayer = nil;
+        }
+        MPMediaItem *musicItem = self.localItems[self.currentTrackNumber];
+        NSURL *musicURL = [musicItem valueForKey:MPMediaItemPropertyAssetURL];
+        if (musicURL) {
+            self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:musicURL error:NULL];
+            self.audioPlayer.enableRate = YES;
+            self.audioPlayer.meteringEnabled = YES;
+            self.audioPlayer.delegate = self;
+            [self.audioPlayer play];
+        }
+    }
 }
 
 - (void)viewDidLoad {
@@ -97,12 +140,14 @@
 
 #pragma mark  AVAudioPlayerDelegate
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
-    
+    if (flag) {
+        [self playNextMusic];
+    }
 }
 
 /* if an error occurs while decoding it will be reported to the delegate. */
 - (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError * __nullable)error {
-    
+    [self playNextMusic];
 }
 
 

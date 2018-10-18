@@ -92,10 +92,8 @@
 //        [musicPlayerVC.musicPlayer setQueueWithItemCollection:mediaItemCollection];
 //        [musicPlayerVC.musicPlayer play];
         
-        NSURL *musicURL = [musicItem valueForKey:MPMediaItemPropertyAssetURL];
-        if (nil != musicURL) {
-            [XYMusicPlayerViewController playeWithLocalURL:musicURL];
-        }
+        /// 从当前index 顺序播放全部
+        [[XYMusicPlayerViewController sharedInstance] playWithItems:self.list trackNumber:indexPath.row];
     }
     else { // 播放apple music cloud 中的歌曲
         NSString *musicId = [musicItem objectForKey:@"id"];

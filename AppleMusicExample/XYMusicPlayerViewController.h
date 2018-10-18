@@ -21,7 +21,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// 播放本地资源
 @property (strong, nonatomic) AVAudioPlayer *audioPlayer;
 
-+ (void)playeWithLocalURL:(NSURL *)assetUrl;
+/// 播放一首歌曲
+- (void)playeWithLocalURL:(NSURL *)assetUrl;
+
+/// 顺序播放多首歌曲，从trackNumber开始播放到最后一首歌
+- (void)playWithItems:(NSArray<MPMediaItem *> *)items trackNumber:(NSInteger)trackNumber;
 
 @end
 
