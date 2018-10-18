@@ -12,10 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface XYMusicListViewModel : NSObject
 
-@property (nonatomic, weak) UICollectionView *collectionView;
-
 - (void)newDataArray:(NSArray *)dataArray;
 - (void)moewDataArray:(NSArray *)dataArray;
+
+- (instancetype)initWithTableView:(UITableView *)tableView online:(BOOL)isOnline;
 
 @end
 

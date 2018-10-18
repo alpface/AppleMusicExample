@@ -20,11 +20,17 @@
     // Do any additional setup after loading the view, typically from a nib.
 }
 
-- (IBAction)buttonClick:(id)sender {
+- (IBAction)onlineClick:(id)sender {
     
-    XYMusicListViewController *vc = [XYMusicListViewController sharedInstance];
+    XYMusicListViewController *vc = [[XYMusicListViewController alloc] initWithOnline:YES];
     UINavigationController *nac = [[UINavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nac animated:YES completion:nil];
 }
 
+- (IBAction)offlineClick:(id)sender {
+    
+    XYMusicListViewController *vc = [[XYMusicListViewController alloc] initWithOnline:NO];
+    UINavigationController *nac = [[UINavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:nac animated:YES completion:nil];
+}
 @end

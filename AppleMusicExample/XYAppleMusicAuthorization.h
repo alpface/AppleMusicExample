@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@import MediaPlayer;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,7 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)requestAppleMusicAuthorize;
 
-+ (void)requestAppleMusicUserLibrarySongsWithOffset:(NSInteger)offset completion:(void (^)(NSDictionary * _Nullable response, NSInteger nextOffset))completion;
++ (void)requestOnlineAppleMusicUserLibrarySongsWithOffset:(NSInteger)offset completion:(void (^)(NSDictionary * _Nullable response, NSInteger nextOffset))completion;
+
++ (void)requestOfflineAppleMusicUserLibrarySongsWithCompletion:(void (^)(NSArray<MPMediaItem *> * _Nullable musicList))completion;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -139,14 +139,15 @@
          }
      }];
 }
-+ (void)requestAppleMusicUserLibrarySongsWithOffset:(NSInteger)offset completion:(nonnull void (^)(NSDictionary * _Nullable, NSInteger))completion {
++ (void)requestOnlineAppleMusicUserLibrarySongsWithOffset:(NSInteger)offset completion:(nonnull void (^)(NSDictionary * _Nullable, NSInteger))completion {
     
     void (^ musicLibaryRequest)(NSString *userToken) = ^(NSString *userToken) {
         NSString *URLString = [self sharedInstance].appleMusicURLStr;
-        [URLString stringByAppendingString:[NSString stringWithFormat:@"?offset=%ld", offset]];
+        URLString = [URLString stringByAppendingString:[NSString stringWithFormat:@"?offset=%ld", offset]];
         NSString *developerTokenHeader = [NSString stringWithFormat:@"Bearer %@", [self sharedInstance].appleMusicDeveloperToken];
         
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URLString]];
+       NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URLString]];
+       request.timeoutInterval = 35.0;
         [request setValue:userToken forHTTPHeaderField:@"Music-User-Token"];
         [request setValue:developerTokenHeader forHTTPHeaderField:@"Authorization"];
         NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
@@ -182,5 +183,13 @@
     else {
         musicLibaryRequest([self sharedInstance].appleMusicUserToken);
     }
+}
+
++ (void)requestOfflineAppleMusicUserLibrarySongsWithCompletion:(void (^)(NSArray * _Nullable))completion {
+   MPMediaQuery *mediaQueue = [MPMediaQuery songsQuery];
+   //获取本地音乐库文件
+   if (completion) {
+      completion(mediaQueue.items);
+   }
 }
 @end

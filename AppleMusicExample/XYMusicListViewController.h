@@ -10,9 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface XYMusicListViewController : UICollectionViewController
+@interface XYMusicListViewController : UITableViewController
 
-+ (instancetype)sharedInstance;
+- (instancetype)initWithOnline:(BOOL)isOnline;
 
 @end
 

@@ -19,17 +19,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VKX-zE-vhh">
-                                <rect key="frame" x="164.5" y="328.5" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
+                                <rect key="frame" x="165.5" y="328.5" width="44" height="30"/>
+                                <state key="normal" title="Online"/>
                                 <connections>
-                                    <action selector="buttonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="shs-gL-pL1"/>
+                                    <action selector="onlineClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9Up-ld-Xhd"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lbH-sP-Kpj">
+                                <rect key="frame" x="164.5" y="268.5" width="46" height="30"/>
+                                <state key="normal" title="Offline"/>
+                                <connections>
+                                    <action selector="offlineClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uea-5T-IEt"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="VKX-zE-vhh" firstAttribute="top" secondItem="lbH-sP-Kpj" secondAttribute="bottom" constant="30" id="A6a-Qw-hN8"/>
                             <constraint firstItem="VKX-zE-vhh" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="E7k-8h-RHK"/>
                             <constraint firstItem="VKX-zE-vhh" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="h9H-du-z26"/>
+                            <constraint firstItem="lbH-sP-Kpj" firstAttribute="centerX" secondItem="VKX-zE-vhh" secondAttribute="centerX" id="j8N-Uj-n20"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

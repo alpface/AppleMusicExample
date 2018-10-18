@@ -16,68 +16,57 @@
 
 @property (nonatomic, strong) XYMusicListViewModel *viewModel;
 @property (nonatomic, assign) NSInteger musicOffset;
+@property (nonatomic, assign) BOOL isOnline;
 
 @end
 
 @implementation XYMusicListViewController
 
-+ (instancetype)sharedInstance {
-//    static XYMusicListViewController *instance = nil;
-//    static dispatch_once_t onceToken;
-//    dispatch_once(&onceToken, ^{
-//        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-//        flowLayout.minimumInteritemSpacing = 10;
-//        flowLayout.minimumLineSpacing      = 10;
-//        flowLayout.estimatedItemSize = CGSizeMake(60, 60.0);
-//        [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-//        instance = [[XYMusicListViewController alloc] initWithCollectionViewLayout:flowLayout];
-//    });
-//    return instance;
-    
-    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.minimumInteritemSpacing = 10;
-    flowLayout.minimumLineSpacing      = 10;
-    flowLayout.estimatedItemSize = CGSizeMake(60, 60.0);
-    [flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    XYMusicListViewController *vc = [[XYMusicListViewController alloc] initWithCollectionViewLayout:flowLayout];
-    return vc;
-}
-
 - (void)dealloc {
     
 }
 
-- (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout {
-    self = [super initWithCollectionViewLayout:layout];
-    if (self) {
-        _viewModel = [XYMusicListViewModel new];
+- (instancetype)initWithOnline:(BOOL)isOnline {
+    if (self = [super init]) {
+        self.isOnline = isOnline;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.collectionView.backgroundColor = [UIColor blackColor];
+    self.tableView.backgroundColor = [UIColor whiteColor];
     
-    self.viewModel.collectionView = self.collectionView;
+    self.viewModel = [[XYMusicListViewModel alloc] initWithTableView:self.tableView online:self.isOnline];
+    
     // 下拉刷新
     __weak typeof(self) weakSelf = self;
-    self.collectionView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        [XYAppleMusicAuthorization requestAppleMusicUserLibrarySongsWithOffset:0 completion:^(NSDictionary * _Nonnull response, NSInteger nextOffset) {
-            weakSelf.musicOffset = nextOffset;
-            NSArray *songsData = [response objectForKey:@"data"];
-            [weakSelf.viewModel newDataArray:songsData];
-            if (songsData.count && nextOffset != NSNotFound) {
-                [weakSelf addFooterRegresh];
-            }
-            [weakSelf.collectionView.mj_header endRefreshing];
-        }];
+    self.tableView.mj_header= [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        if (weakSelf.isOnline) {
+            [XYAppleMusicAuthorization requestOnlineAppleMusicUserLibrarySongsWithOffset:0 completion:^(NSDictionary * _Nonnull response, NSInteger nextOffset) {
+                weakSelf.musicOffset = nextOffset;
+                NSArray *songsData = [response objectForKey:@"data"];
+                [weakSelf.viewModel newDataArray:songsData];
+                if (songsData.count && nextOffset != NSNotFound) {
+                    [weakSelf addFooterRegresh];
+                }
+                [weakSelf.tableView.mj_header endRefreshing];
+            }];
+        }
+        else {
+            [XYAppleMusicAuthorization requestOfflineAppleMusicUserLibrarySongsWithCompletion:^(NSArray<MPMediaItem *> * _Nullable musicList) {
+                /// 本地音乐不需要上拉加载
+                [weakSelf.viewModel newDataArray:musicList];
+                [weakSelf.tableView.mj_header endRefreshing];
+                weakSelf.tableView.mj_footer = nil;
+            }];
+        }
     }];
     
     // 设置自动切换透明度(在导航栏下面自动隐藏)
-    self.collectionView.mj_header.automaticallyChangeAlpha = YES;
+    self.tableView.mj_header.automaticallyChangeAlpha = YES;
     
-    [self.collectionView.mj_header beginRefreshing];
+    [self.tableView.mj_header beginRefreshing];
     
     UIBarButtonItem *closeItem = [[UIBarButtonItem alloc] initWithTitle:@"close" style:UIBarButtonItemStyleDone target:self action:@selector(close)];
     self.navigationItem.leftBarButtonItem = closeItem;
@@ -88,23 +77,22 @@
 }
 
 - (void)addFooterRegresh {
-    if (self.collectionView.mj_footer == nil) {
+    if (self.tableView.mj_footer == nil) {
         // 上拉刷新
         __weak typeof(self) weakSelf = self;
-        self.collectionView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-            [XYAppleMusicAuthorization requestAppleMusicUserLibrarySongsWithOffset:weakSelf.musicOffset completion:^(NSDictionary * _Nonnull response, NSInteger nextOffset) {
+        self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+            [XYAppleMusicAuthorization requestOnlineAppleMusicUserLibrarySongsWithOffset:weakSelf.musicOffset completion:^(NSDictionary * _Nonnull response, NSInteger nextOffset) {
                 weakSelf.musicOffset = nextOffset;
                 NSArray *songsData = [response objectForKey:@"data"];
                 [weakSelf.viewModel moewDataArray:songsData];
-                [weakSelf.collectionView.mj_footer endRefreshing];
+                [weakSelf.tableView.mj_footer endRefreshing];
                 if (nextOffset == NSNotFound) {
-                    [weakSelf.collectionView.mj_footer endRefreshingWithNoMoreData];
+                    [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
                 }
             }];
         }];
     }
     
 }
-
 
 @end

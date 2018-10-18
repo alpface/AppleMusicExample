@@ -11,9 +11,11 @@
 #import "XYMusicListViewCell.h"
 #import "XYMusicPlayerViewController.h"
 
-@interface XYMusicListViewModel () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface XYMusicListViewModel () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSMutableArray *list;
+@property (nonatomic, weak) UITableView *tableView;
+@property (nonatomic, assign) BOOL isOnline;
 
 @end
 
@@ -29,73 +31,85 @@
     return self;
 }
 
-- (void)setCollectionView:(UICollectionView *)collectionView {
-    _collectionView = collectionView;
-     [self.collectionView registerClass:[XYMusicListViewCell class] forCellWithReuseIdentifier:@"XYMusicListViewCell"];
-    _collectionView.delegate = self;
-    _collectionView.dataSource = self;
+- (instancetype)initWithTableView:(UITableView *)tableView online:(BOOL)isOnline {
+    if (self = [self init]) {
+        self.tableView = tableView;
+        self.isOnline = isOnline;
+    }
+    return self;
+}
+
+- (void)setTableView:(UITableView *)tableView {
+    _tableView = tableView;
+    [tableView registerClass:[XYMusicListViewCell class] forCellReuseIdentifier:@"XYMusicListViewCell"];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
 }
 
 - (void)newDataArray:(NSArray *)dataArray {
     [self.list removeAllObjects];
     [self.list addObjectsFromArray:dataArray];
-    [self.collectionView reloadData];
+    [self.tableView reloadData];
 }
 
 - (void)moewDataArray:(NSArray *)dataArray {
     [self.list addObjectsFromArray:dataArray];
-    [self.collectionView reloadData];
+    [self.tableView reloadData];
 }
 
 ////////////////////////////////////////////////////////////////////////
 #pragma mark -
 ////////////////////////////////////////////////////////////////////////
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.list.count;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    XYMusicListViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"XYMusicListViewCell" forIndexPath:indexPath];
-    NSDictionary *music = self.list[indexPath.row];
-    cell.music = music;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    XYMusicListViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"XYMusicListViewCell" forIndexPath:indexPath];
+    id musicItem = self.list[indexPath.row];
+    cell.musicItem = musicItem;
     return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *music = self.list[indexPath.row];
-    NSString *musicId = [music objectForKey:@"id"];
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 60.0;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    id musicItem = self.list[indexPath.row];
     
     XYMusicPlayerViewController *musicPlayerVC = [XYMusicPlayerViewController sharedInstance];
     [musicPlayerVC.musicPlayer pause];
-    [musicPlayerVC.musicPlayer setQueueWithStoreIDs:@[musicId]];
+    
 //    musicPlayerVC.musicPlayer.volume = 0.1;
-    [musicPlayerVC.musicPlayer
-     prepareToPlayWithCompletionHandler:^(NSError * _Nullable error) {
-         if (error) {
-             NSLog(@"error is %@", error);
-         } else {
-             [musicPlayerVC.musicPlayer play];
-             NSLog(@"now playing item: %@ %@ %f", musicPlayerVC.musicPlayer.nowPlayingItem.title, musicPlayerVC.musicPlayer.nowPlayingItem.artist, musicPlayerVC.musicPlayer.nowPlayingItem.playbackDuration);
-         }
-     }];
-}
-// 当cell高亮时返回是否高亮
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
+    
+    if (self.isOnline == NO) { // 播放apple music本地的歌曲
+        // 申明一个Collection便于下面给MusicPlayer赋值
+        MPMediaItemCollection *mediaItemCollection;
+        // 将音乐信息赋值给musicPlayer
+        mediaItemCollection = [[MPMediaItemCollection alloc] initWithItems:[self.list copy]];
+        [musicPlayerVC.musicPlayer setQueueWithItemCollection:mediaItemCollection];
+        [musicPlayerVC.musicPlayer play];
+    }
+    else { // 播放apple music cloud 中的歌曲
+        NSString *musicId = [musicItem objectForKey:@"id"];
+        [musicPlayerVC.musicPlayer setQueueWithStoreIDs:@[musicId]];
+        [musicPlayerVC.musicPlayer
+         prepareToPlayWithCompletionHandler:^(NSError * _Nullable error) {
+             if (error) {
+                 NSLog(@"error is %@", error);
+             } else {
+                 [musicPlayerVC.musicPlayer play];
+                 NSLog(@"now playing item: %@ %@ %f", musicPlayerVC.musicPlayer.nowPlayingItem.title, musicPlayerVC.musicPlayer.nowPlayingItem.artist, musicPlayerVC.musicPlayer.nowPlayingItem.playbackDuration);
+             }
+         }];
+    }
+    
 }
 
-/// 高亮时设置颜色
-- (void)collectionView:(UICollectionView *)colView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell* cell = [colView cellForItemAtIndexPath:indexPath];
-    [cell setBackgroundColor:[UIColor grayColor]];
-}
 
-/// 正常状态时设置颜色
-- (void)collectionView:(UICollectionView *)colView  didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell* cell = [colView cellForItemAtIndexPath:indexPath];
-    [cell setBackgroundColor:[UIColor whiteColor]];
-}
+
 ////////////////////////////////////////////////////////////////////////
 #pragma mark -
 ////////////////////////////////////////////////////////////////////////

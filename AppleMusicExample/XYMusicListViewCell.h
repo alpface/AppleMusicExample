@@ -10,9 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface XYMusicListViewCell : UICollectionViewCell
+@interface XYMusicListViewCell : UITableViewCell
 
-@property (nonatomic, strong) NSDictionary *music;
+@property (nonatomic, strong) id musicItem;
 
 @end
 

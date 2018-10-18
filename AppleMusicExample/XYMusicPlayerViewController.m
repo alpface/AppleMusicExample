@@ -26,6 +26,15 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
+        /**
+         (1)applicationMusicPlayer,
+         官方文档注释的意思是:通过applicationMusicPlayer播放的音乐在应用退出后将还原用户的播放状态
+         实际效果是:用户退出应用界面后，音乐无法后台播放。
+         (2)systemMusicPlayer，
+         官方文档注释的意思是:通过systemMusicPlayer播放的音乐将替换用户当前播放音乐的状态。
+         实际效果是:用户退出应用界面后，音乐可以后台播放
+         并且可以通过苹果自带的功能，在锁屏模式下切换音乐并控制音乐的播放和暂停。
+        */
         _musicPlayer = [MPMusicPlayerController systemMusicPlayer];
         [_musicPlayer beginGeneratingPlaybackNotifications];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNowPlayingItemDidChange) name:MPMusicPlayerControllerNowPlayingItemDidChangeNotification
