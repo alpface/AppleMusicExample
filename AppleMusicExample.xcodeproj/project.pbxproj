@@ -13,7 +13,7 @@
 		D04FEB362178289A006A6D8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D04FEB352178289A006A6D8A /* Assets.xcassets */; };
 		D04FEB392178289A006A6D8A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D04FEB372178289A006A6D8A /* LaunchScreen.storyboard */; };
 		D04FEB3C2178289A006A6D8A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D04FEB3B2178289A006A6D8A /* main.m */; };
-		D04FEB452178289A006A6D8A /* XYMusicPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D04FEB442178289A006A6D8A /* XYMusicPlayerViewController.m */; };
+		D04FEB452178289A006A6D8A /* XYMusicPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D04FEB442178289A006A6D8A /* XYMusicPlayerController.m */; };
 		D04FEB482178289A006A6D8A /* XYAppleMusicAuthorization.m in Sources */ = {isa = PBXBuildFile; fileRef = D04FEB472178289A006A6D8A /* XYAppleMusicAuthorization.m */; };
 		D04FEB4B2178289A006A6D8A /* XYMusicListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D04FEB4A2178289A006A6D8A /* XYMusicListViewController.m */; };
 		D04FEB4E2178289A006A6D8A /* XYMusicListViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D04FEB4D2178289A006A6D8A /* XYMusicListViewModel.m */; };
@@ -80,8 +80,8 @@
 		D04FEB382178289A006A6D8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D04FEB3A2178289A006A6D8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D04FEB3B2178289A006A6D8A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		D04FEB432178289A006A6D8A /* XYMusicPlayerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XYMusicPlayerViewController.h; sourceTree = "<group>"; };
-		D04FEB442178289A006A6D8A /* XYMusicPlayerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XYMusicPlayerViewController.m; sourceTree = "<group>"; };
+		D04FEB432178289A006A6D8A /* XYMusicPlayerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XYMusicPlayerController.h; sourceTree = "<group>"; };
+		D04FEB442178289A006A6D8A /* XYMusicPlayerController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XYMusicPlayerController.m; sourceTree = "<group>"; };
 		D04FEB462178289A006A6D8A /* XYAppleMusicAuthorization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XYAppleMusicAuthorization.h; sourceTree = "<group>"; };
 		D04FEB472178289A006A6D8A /* XYAppleMusicAuthorization.m */ = {isa = PBXFileReference; indentWidth = 3; lastKnownFileType = sourcecode.c.objc; path = XYAppleMusicAuthorization.m; sourceTree = "<group>"; };
 		D04FEB492178289A006A6D8A /* XYMusicListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XYMusicListViewController.h; sourceTree = "<group>"; };
@@ -240,8 +240,8 @@
 			children = (
 				D04FEC202178708D006A6D8A /* SDWebImage */,
 				D04FEB522178289A006A6D8A /* MJRefresh */,
-				D04FEB432178289A006A6D8A /* XYMusicPlayerViewController.h */,
-				D04FEB442178289A006A6D8A /* XYMusicPlayerViewController.m */,
+				D04FEB432178289A006A6D8A /* XYMusicPlayerController.h */,
+				D04FEB442178289A006A6D8A /* XYMusicPlayerController.m */,
 				D04FEB462178289A006A6D8A /* XYAppleMusicAuthorization.h */,
 				D04FEB472178289A006A6D8A /* XYAppleMusicAuthorization.m */,
 				D04FEB492178289A006A6D8A /* XYMusicListViewController.h */,
@@ -521,7 +521,7 @@
 				D04FEB872178289A006A6D8A /* MJRefreshBackGifFooter.m in Sources */,
 				D04FEB852178289A006A6D8A /* NSBundle+MJRefresh.m in Sources */,
 				D04FEC732178708D006A6D8A /* SDWebImageImageIOCoder.m in Sources */,
-				D04FEB452178289A006A6D8A /* XYMusicPlayerViewController.m in Sources */,
+				D04FEB452178289A006A6D8A /* XYMusicPlayerController.m in Sources */,
 				D04FEC5C2178708D006A6D8A /* UIImageView+HighlightedWebCache.m in Sources */,
 				D04FEC712178708D006A6D8A /* UIView+WebCacheOperation.m in Sources */,
 				D04FEB862178289A006A6D8A /* UIView+MJExtension.m in Sources */,

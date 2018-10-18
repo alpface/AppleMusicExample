@@ -1,20 +1,20 @@
 //
-//  XYMusicPlayerViewController.h
+//  XYMusicPlayerController.h
 //  AppleMusicExample
 //
 //  Created by xiaoyuan on 2018/10/14.
 //  Copyright © 2018 xiaoyuan. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 @import MediaPlayer;
 @import AVFoundation;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface XYMusicPlayerViewController : UIViewController
+@interface XYMusicPlayerController : NSObject
 
-+ (XYMusicPlayerViewController *)sharedInstance;
++ (XYMusicPlayerController *)sharedInstance;
 
 /// 系统apple music app
 @property (nonatomic, strong) MPMusicPlayerController *musicPlayer;

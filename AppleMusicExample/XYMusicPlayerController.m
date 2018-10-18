@@ -1,27 +1,27 @@
 //
-//  XYMusicPlayerViewController.m
+//  XYMusicPlayerController.m
 //  AppleMusicExample
 //
 //  Created by xiaoyuan on 2018/10/14.
 //  Copyright © 2018 xiaoyuan. All rights reserved.
 //
 
-#import "XYMusicPlayerViewController.h"
+#import "XYMusicPlayerController.h"
 
-@interface XYMusicPlayerViewController () <AVAudioPlayerDelegate>
+@interface XYMusicPlayerController () <AVAudioPlayerDelegate>
 /// 当前播放的歌曲序号， 只适应AVAudioPlayer的本地歌曲
 @property (nonatomic, assign) NSInteger currentTrackNumber;
 @property (nonatomic, strong) NSArray<MPMediaItem *> *localItems;
 
 @end
 
-@implementation XYMusicPlayerViewController
+@implementation XYMusicPlayerController
 
-+ (XYMusicPlayerViewController *)sharedInstance {
-    static XYMusicPlayerViewController *musicPlayerVC = nil;
++ (XYMusicPlayerController *)sharedInstance {
+    static XYMusicPlayerController *musicPlayerVC = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        musicPlayerVC = [[XYMusicPlayerViewController alloc] init];
+        musicPlayerVC = [[XYMusicPlayerController alloc] init];
     });
     return musicPlayerVC;
 }
@@ -60,6 +60,7 @@
 }
 
 - (void)playWithItems:(NSArray<MPMediaItem *> *)items trackNumber:(NSInteger)trackNumber {
+    trackNumber = MIN(items.count - 1, MAX(0, trackNumber));
     self.localItems = items;
     self.currentTrackNumber = trackNumber;
     [self.audioPlayer pause];
@@ -79,8 +80,9 @@
     }
 }
 
+/// 播放下一曲本地歌曲，如果本地歌曲的MPMediaItemPropertyAssetURL==nil，则播放下一曲
 - (void)playNextMusic {
-    if (self.currentTrackNumber < [self.localItems count] - 1) {
+    while (self.currentTrackNumber < [self.localItems count] - 1) {
         self.currentTrackNumber ++;
         if (_audioPlayer) {
             [_audioPlayer stop];
@@ -88,19 +90,17 @@
         }
         MPMediaItem *musicItem = self.localItems[self.currentTrackNumber];
         NSURL *musicURL = [musicItem valueForKey:MPMediaItemPropertyAssetURL];
+        /// 如果歌曲是通过mac的itunes同步到iOS设备的，则MPMediaItemPropertyAssetURL有值
+        /// 如果歌曲是通过apple music下载的，则MPMediaItemPropertyAssetURL为nil
         if (musicURL) {
             self.audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:musicURL error:NULL];
             self.audioPlayer.enableRate = YES;
             self.audioPlayer.meteringEnabled = YES;
             self.audioPlayer.delegate = self;
             [self.audioPlayer play];
+            break;
         }
     }
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
 
 #pragma mark - MPMusicPlayerController Notifications

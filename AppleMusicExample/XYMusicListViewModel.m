@@ -9,7 +9,7 @@
 #import "XYMusicListViewModel.h"
 #import "XYAppleMusicAuthorization.h"
 #import "XYMusicListViewCell.h"
-#import "XYMusicPlayerViewController.h"
+#import "XYMusicPlayerController.h"
 
 @interface XYMusicListViewModel () <UITableViewDelegate, UITableViewDataSource>
 
@@ -79,7 +79,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     id musicItem = self.list[indexPath.row];
     
-    XYMusicPlayerViewController *musicPlayerVC = [XYMusicPlayerViewController sharedInstance];
+    XYMusicPlayerController *musicPlayerVC = [XYMusicPlayerController sharedInstance];
     [musicPlayerVC.musicPlayer pause];
     
 //    musicPlayerVC.musicPlayer.volume = 0.1;
@@ -93,7 +93,7 @@
 //        [musicPlayerVC.musicPlayer play];
         
         /// 从当前index 顺序播放全部
-        [[XYMusicPlayerViewController sharedInstance] playWithItems:self.list trackNumber:indexPath.row];
+        [[XYMusicPlayerController sharedInstance] playWithItems:self.list trackNumber:indexPath.row];
     }
     else { // 播放apple music cloud 中的歌曲
         NSString *musicId = [musicItem objectForKey:@"id"];
