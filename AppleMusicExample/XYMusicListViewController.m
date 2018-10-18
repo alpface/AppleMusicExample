@@ -55,10 +55,11 @@
         }
         else {
             [XYAppleMusicAuthorization requestOfflineAppleMusicUserLibrarySongsWithCompletion:^(NSArray<MPMediaItem *> * _Nullable musicList) {
-                /// 本地音乐不需要上拉加载
+                /// 本地音乐不需要上拉加载和下来刷新
                 [weakSelf.viewModel newDataArray:musicList];
                 [weakSelf.tableView.mj_header endRefreshing];
                 weakSelf.tableView.mj_footer = nil;
+                weakSelf.tableView.mj_header = nil;
             }];
         }
     }];

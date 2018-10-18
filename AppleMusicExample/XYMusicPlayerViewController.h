@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @import MediaPlayer;
+@import AVFoundation;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,6 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 系统apple music app
 @property (nonatomic, strong) MPMusicPlayerController *musicPlayer;
+/// 播放本地资源
+@property (strong, nonatomic) AVAudioPlayer *audioPlayer;
+
++ (void)playeWithLocalURL:(NSURL *)assetUrl;
 
 @end
 

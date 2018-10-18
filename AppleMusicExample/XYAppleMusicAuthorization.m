@@ -185,11 +185,14 @@
     }
 }
 
-+ (void)requestOfflineAppleMusicUserLibrarySongsWithCompletion:(void (^)(NSArray * _Nullable))completion {
-   MPMediaQuery *mediaQueue = [MPMediaQuery songsQuery];
-   //获取本地音乐库文件
-   if (completion) {
-      completion(mediaQueue.items);
-   }
++ (void)requestOfflineAppleMusicUserLibrarySongsWithCompletion:(void (^)(NSArray<MPMediaItem *> * _Nullable))completion {
+   dispatch_async(dispatch_get_main_queue(), ^{
+      MPMediaQuery *mediaQueue = [MPMediaQuery songsQuery];
+      //获取本地音乐库文件
+      if (completion) {
+         completion(mediaQueue.items);
+      }
+   });
+   
 }
 @end

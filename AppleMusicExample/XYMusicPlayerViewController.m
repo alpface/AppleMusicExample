@@ -8,7 +8,7 @@
 
 #import "XYMusicPlayerViewController.h"
 
-@interface XYMusicPlayerViewController ()
+@interface XYMusicPlayerViewController () <AVAudioPlayerDelegate>
 
 @end
 
@@ -43,6 +43,16 @@
                                                    object:_musicPlayer];
     }
     return self;
+}
+
++ (void)playeWithLocalURL:(NSURL *)assetUrl {
+    NSError *error = nil;
+    [[self sharedInstance].audioPlayer pause];
+    [self sharedInstance].audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:assetUrl error:&error];
+    [[self sharedInstance].audioPlayer play];
+    [self sharedInstance].audioPlayer.delegate = [self sharedInstance];
+    [self sharedInstance].audioPlayer.enableRate = YES;
+    [self sharedInstance].audioPlayer.meteringEnabled = YES;
 }
 
 - (void)viewDidLoad {
@@ -83,6 +93,16 @@
             NSLog(@"音乐播放寻求后退");
             break;
     }
+}
+
+#pragma mark  AVAudioPlayerDelegate
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
+    
+}
+
+/* if an error occurs while decoding it will be reported to the delegate. */
+- (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError * __nullable)error {
+    
 }
 
 

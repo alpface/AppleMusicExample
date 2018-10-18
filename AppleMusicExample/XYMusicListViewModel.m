@@ -86,11 +86,16 @@
     
     if (self.isOnline == NO) { // 播放apple music本地的歌曲
         // 申明一个Collection便于下面给MusicPlayer赋值
-        MPMediaItemCollection *mediaItemCollection;
-        // 将音乐信息赋值给musicPlayer
-        mediaItemCollection = [[MPMediaItemCollection alloc] initWithItems:[self.list copy]];
-        [musicPlayerVC.musicPlayer setQueueWithItemCollection:mediaItemCollection];
-        [musicPlayerVC.musicPlayer play];
+//        MPMediaItemCollection *mediaItemCollection;
+//        // 将音乐信息赋值给musicPlayer
+//        mediaItemCollection = [[MPMediaItemCollection alloc] initWithItems:[self.list copy]];
+//        [musicPlayerVC.musicPlayer setQueueWithItemCollection:mediaItemCollection];
+//        [musicPlayerVC.musicPlayer play];
+        
+        NSURL *musicURL = [musicItem valueForKey:MPMediaItemPropertyAssetURL];
+        if (nil != musicURL) {
+            [XYMusicPlayerViewController playeWithLocalURL:musicURL];
+        }
     }
     else { // 播放apple music cloud 中的歌曲
         NSString *musicId = [musicItem objectForKey:@"id"];
